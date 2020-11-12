@@ -20,19 +20,18 @@ function Initialisation() {
 	//On cache le bouton "Rejouer"
 	
 	// array contient tout les boutons sur lesquelles on place event listener pour la fonction jouer
-	if (nbrTour == undefined) {
+	
 		for (let i = 0; i < buttons.length; i++) {
 			buttons[i].addEventListener('click',jouer)
 		}
-		nbrTour = 0;
 		
-	} else { // on veut relancer une partie avant la fin :
+	// on veut relancer une partie avant la fin :
 		nbrTour = 0;
 		for (let i = 0; i < buttons.length; i++) {
 			buttons[i].style.backgroundImage = "";
 			buttons[i].disabled = false;
 			
-		}
+		
 	}
 	symboleActuel = "url('image-morpion/croix.png')";
 	
@@ -50,41 +49,7 @@ function Initialisation() {
 	
 	document.getElementById('Player').innerHTML = nomJoueur[0];
 
-/*		NE FONCTIONNE PAS
-	// création des listes contenants les lignes(3) colonnes(3) et diagonales(2) du morpion( total = 8 )
-	// Ces listes (qui sont des objets) vaudront false( '' ) tant que les cases sont vides
-	//  puis true et symbole entrés dans la liste a chaque click
-	var ligne1;
-	var colonne1;
-	var ligne2;
-	var colonne2;
-	var ligne3;
-	var colonne3;
-	var diagonale1;
-	var diagonale2;
-	class AxeMorpion {
-		constructor() {
-			this.case1 = '';
-			this.case2 = '';
-			this.case3 = '';
-			this.match = 0;			// cette valeur donneras le nombre d'élément dans la liste = true && du même symbole
-		}
-		getMatch(Symbole) {			// Symbole a comparé : renvoie true si 3 symboles identiques.
-			this.match = 0			// Si un précédent test est négatif on ramène à 0
-			Object.keys(this).forEach(iter => {
-				if ((this[iter]) &&
-				 ((typeof(this[iter]) !== 'function') ||
-				 ((typeof(this[iter]) !== 'number'))) &&
-				 (this[iter] == Symbole) ) {
-					this.match++;
-				}
 
-			});
-			
-				return (this.match == 3);
-			
-		}
-	}*/
 }
 
 function jouer(event) { 
@@ -119,6 +84,7 @@ function checking() {
 		for (let i = 0; i < buttons.length; i++) {
 			buttons[i].removeEventListener('click',jouer)
 		}
+		nbrTour = undefined;
 		// buttons.forEach(button => {
 		// 	button.disabled = true;
 		// })
@@ -127,7 +93,7 @@ function checking() {
 		alert("Fin du jeu ! \nPas de gagnant !!!")
 		location.reload();
 	}
-	return false
+	
 
 	
 }
