@@ -22,7 +22,7 @@ function Initialisation() {
 	// array contient tout les boutons sur lesquelles on place event listener pour la fonction jouer
 	if (nbrTour == undefined) {
 		for (let i = 0; i < buttons.length; i++) {
-			buttons[i].addEventListener('click', event => jouer(event))
+			buttons[i].addEventListener('click',jouer)
 		}
 		nbrTour = 0;
 		
@@ -44,11 +44,47 @@ function Initialisation() {
 		
 		
 	});
-	nomJoueur.forEach( function(element) {
-		console.log(element);
-	});
+	// nomJoueur.forEach( function(element) {
+	// 	console.log(element);
+	// });
 	
 	document.getElementById('Player').innerHTML = nomJoueur[0];
+
+/*		NE FONCTIONNE PAS
+	// création des listes contenants les lignes(3) colonnes(3) et diagonales(2) du morpion( total = 8 )
+	// Ces listes (qui sont des objets) vaudront false( '' ) tant que les cases sont vides
+	//  puis true et symbole entrés dans la liste a chaque click
+	var ligne1;
+	var colonne1;
+	var ligne2;
+	var colonne2;
+	var ligne3;
+	var colonne3;
+	var diagonale1;
+	var diagonale2;
+	class AxeMorpion {
+		constructor() {
+			this.case1 = '';
+			this.case2 = '';
+			this.case3 = '';
+			this.match = 0;			// cette valeur donneras le nombre d'élément dans la liste = true && du même symbole
+		}
+		getMatch(Symbole) {			// Symbole a comparé : renvoie true si 3 symboles identiques.
+			this.match = 0			// Si un précédent test est négatif on ramène à 0
+			Object.keys(this).forEach(iter => {
+				if ((this[iter]) &&
+				 ((typeof(this[iter]) !== 'function') ||
+				 ((typeof(this[iter]) !== 'number'))) &&
+				 (this[iter] == Symbole) ) {
+					this.match++;
+				}
+
+			});
+			
+				return (this.match == 3);
+			
+		}
+	}*/
 }
 
 function jouer(event) { 
@@ -78,10 +114,90 @@ function jouer(event) {
 function checking() {
 	//.reload() à étudier
 	
-	if (nbrTour > 8) {
+	if (gagne()) {
+		alert(document.getElementById('Player').innerHTML + ' a gagné la partie !!')
+		for (let i = 0; i < buttons.length; i++) {
+			buttons[i].removeEventListener('click',jouer)
+		}
+		// buttons.forEach(button => {
+		// 	button.disabled = true;
+		// })
+	}
+	else if (nbrTour > 8) {
 		alert("Fin du jeu ! \nPas de gagnant !!!")
 		location.reload();
 	}
-		
+	return false
+
 	
+}
+
+function gagne() {
+	//Méthode ennuyeuse avec tests par lignes / colonnes / diagonales
+
+	// les lignes :
+	let i;
+	//ligne1
+	i=0;
+	if ((buttons[i].style.backgroundImage != '') //n'est pas vide
+	 && (buttons[i].style.backgroundImage == buttons[i+1].style.backgroundImage)
+	 && (buttons[i+1].style.backgroundImage == buttons[i+2].style.backgroundImage)) {
+		return true;
+	 }
+
+	// ligne2
+	i=3;
+	if ((buttons[i].style.backgroundImage != '') //n'est pas vide
+	 && (buttons[i].style.backgroundImage == buttons[i+1].style.backgroundImage)
+	 && (buttons[i+1].style.backgroundImage == buttons[i+2].style.backgroundImage)) {
+		return true;
+	}
+
+	//ligne3
+	i=6;
+	if ((buttons[i].style.backgroundImage != '') //n'est pas vide
+	 && (buttons[i].style.backgroundImage == buttons[i+1].style.backgroundImage)
+	 && (buttons[i+1].style.backgroundImage == buttons[i+2].style.backgroundImage)) {
+		return true;
+	}
+
+	// les colonnes :
+	// colonne1 :
+	i=0;
+	if ((buttons[i].style.backgroundImage != '') //n'est pas vide
+	 && (buttons[i].style.backgroundImage == buttons[i+3].style.backgroundImage)
+	 && (buttons[i+3].style.backgroundImage == buttons[i+6].style.backgroundImage)) {
+		return true;
+	}
+
+	i=1;
+	if ((buttons[i].style.backgroundImage != '') //n'est pas vide
+	 && (buttons[i].style.backgroundImage == buttons[i+3].style.backgroundImage)
+	 && (buttons[i+3].style.backgroundImage == buttons[i+6].style.backgroundImage)) {
+		return true;
+	}
+
+	i=2;
+	if ((buttons[i].style.backgroundImage != '') //n'est pas vide
+	 && (buttons[i].style.backgroundImage == buttons[i+3].style.backgroundImage)
+	 && (buttons[i+3].style.backgroundImage == buttons[i+6].style.backgroundImage)) {
+		return true;
+	}
+
+	// les diagonales :
+	// diagonale 1 :
+	i=0;
+	if ((buttons[i].style.backgroundImage != '') //n'est pas vide
+	 && (buttons[i].style.backgroundImage == buttons[i+4].style.backgroundImage)
+	 && (buttons[i+4].style.backgroundImage == buttons[i+8].style.backgroundImage)) {
+		return true;
+	}
+	// diagonale  :
+	i=2;
+	if ((buttons[i].style.backgroundImage != '') //n'est pas vide
+	 && (buttons[i].style.backgroundImage == buttons[i+2].style.backgroundImage)
+	 && (buttons[i+2].style.backgroundImage == buttons[i+4].style.backgroundImage)) {
+		return true;
+	}
+
 }
